@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>scrollBar测试</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+		<link rel="stylesheet" type="text/css" href="scrollBar.css"/>
+	</head>
+	<body>
+		<div class="auto-scroll">
+			<div class="scroll scroll-block">
+				<img id="scrollTarget" src="part3_slide1.jpg" alt="test" />
+			</div>
+		</div>
+		<script src="scrollBar.js"></script>
+		<script>
+			var ele = document.querySelector("#scrollTarget");
+			var bar = new ScrollBar(ele,{
+				addBar:'.auto-scroll',
+				parents:'.scroll',//当前滚动元素
+				typeBar:'auto'//自动添加bar
+			});
+			bar.scrollTo(-200,-50);
+		</script>
+	</body>
+</html>

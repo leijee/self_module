@@ -1,0 +1,52 @@
+.auto-scroll{
+    position: relative;
+}
+.auto-scroll .scroll{
+    overflow: hidden;
+}
+.auto-scroll .x-bar{
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #eee;
+}
+.auto-scroll .x-bar .bar{
+    width: 35%;
+    height: 100%;
+    background: #b2b2b2;
+    border-radius: 5px;
+    -webkit-appearance: none;
+}
+.auto-scroll .y-bar{
+    position: absolute;
+    top: 0;
+    right: -5px;
+    width: 3px;
+    height: 100%;
+    background: #eee;
+    
+}
+.auto-scroll .y-bar .bar{
+    width: 100%;
+    height: 25%;
+    background: #b2b2b2;
+    border-radius: 5px;
+    -webkit-appearance: none;
+}
+
+/*测试案例*/
+.auto-scroll{
+	width: 400px;
+	height: auto;
+}
+.scroll-block{
+	width: 400px;
+	height: 200px;
+	overflow: hidden;
+}
+
+
+
+
