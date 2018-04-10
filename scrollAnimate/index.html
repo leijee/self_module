@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/style.css">
     
     <link rel="stylesheet" href="./css/index.css">
-    
+    <link rel="stylesheet" href="./css/animate.css">
 </head>
 <body>
     <div class="contents">
@@ -28,7 +28,7 @@
         <div class="part2">
         	<h1 class="section-title title1"><i class="title-icon-left"></i><span>什么是股指期货</span><i class="title-icon-right"></i></h1>
         	<p class="title-text">股指期货（指数期货）是金融期货（Financial Futures）中的一种类型，是以股票指数为标的物的金融期货合约。主要分为IF,IH,IC三种指数。</p>
-        	<div class="part2-item scroll-animate lazy  rotes ani-1">
+        	<div class="part2-item scroll-animate lazy  rotes ani-1"  top-scroll="300" bottom-scroll="500">
         		<div class="item-content">
         			<span class="content-text fadeIn ani-4">股指期货</span>
         		</div>
@@ -200,42 +200,8 @@
             <p><i class="ft-icon-tel"></i>400-1056-588</p>
         </div>
     </div>
-
-    <!-- <div id="responsiveUrl" style="display:none;">https://www.paisheng.com/simuActivity/app/20180223/gzqhtl/index.html</div> -->
-
     <script src="./js/jquery-1.12.3.min.js"></script>
-    
-    <script src="./js/validform.js"></script>
-    <script src="./js/common.js"></script>
-    <script>
-    $(function() {
-    
-        var booking = function() {
-            Util.userBooking.init({
-                obj: $('#side-bar-booking'),
-                loginStatus: 0,
-                footerBar: {
-                    obj: $('#ft-bar'),
-                    seat: $('.ft-bar-seat'),
-                    form: $('#ft-form'),
-                    formSubmitBtn: $('#ft-form-submit')
-                }
-            });
-        }
-    
-
-    
-        Util.userLogin.init(booking)
-    
-
-    
-
-    })
-    </script>
-    
     <script src="./js/scrollAnimate.js"></script>
-    
     <script src="./js/index.js"></script>
-    
 </body>
 </html>

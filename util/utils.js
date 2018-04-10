@@ -361,7 +361,7 @@
 			 * 常用对象判断 isArray isFunction isObject isNumber isBoolean isString isRegExp
 			 **/
 			(function objJudgment(window){
-				var objArr = ['Array','Function','Object','Number','Boolean','String','RegExp'];
+				var objArr = ['Array','Function','Object','Number','Boolean','String','RegExp','Date'];
 				objArr.forEach(function(obj,i){
 				    window["is"+obj] = function(currObj){
 				        return Object.prototype.toString.call(currObj) === "[object "+obj+"]";
@@ -498,9 +498,9 @@
 	}
 	return Utils();
 	//数字数组排序（由小到大）
-	Array.prototype.sort = function(){
-		var newArr = this;
-		var len = newArr.length;
+	Array.prototype.sort = function(flag){
+		var oldArr = this;
+		var len = oldArr.length;
 		for(var i=0;i<len-1;i++){
 			for(var j=i+1;j<len;j++){
 				if(oldArr[j]<oldArr[i]){
@@ -511,13 +511,16 @@
 				}
 			}
 		}
-		return newArr;
+		if(flag){
+			oldArr.reverse();
+		}
+		return oldArr;
 	}
 	/**
 	 * 使用each方法遍历数组，返回当前数组 
 	 * func三个参数分别是(数组下标对应的元素,数组下标,当前数组 )
 	 **/
-	Array.prototype.each = function(){
+	Array.prototype.each = function(func){
 		var len =this.length;
 		for(var i=0;i<len;i++){
 			if(this[i]&&func(this[i],i,this)){
@@ -539,6 +542,7 @@
 		}
 		return this;
 	}
+
 	/**
 	 * 移除数组中指定位置 
 	 **/
@@ -562,7 +566,7 @@
 		if(this.length){
 			var i = this.indexOf(item);
 			if(i>-1){
-				return this.splice(i,1);
+			 	this.splice(i,1);
 			}
 		}
 	}
@@ -608,6 +612,22 @@
 				arr[i] = this[i];
 			}
 			return arr;
+		}
+	}
+	/**
+	 * [UpWord 将单词首字母转成大写]
+	 * @param {[Boolean]} flag [true,字符串所有单词转换成首字母大写，false仅有字符串首字母转成大写]
+	 */
+	String.prototype.UpWord = function (flag){
+		var reg = /\b\w+\b/g;
+		var str = '';
+		if(flag){
+			str = this.replace(reg,function(word){
+				return word.substring(0,1).toUpperCase()+word.substring(1);
+			});
+			return str;
+		}else{
+			return this.substring(0,1).toUpperCase()+this.substring(1);
 		}
 	}
 	/**
