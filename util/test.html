@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>utils</title>
+    <style>
+	    .circleProgress_wrapper {
+	        width: 200px;
+	        height: 200px;
+	        margin: 50px auto;
+	        position: relative;
+	        border: 1px solid #ddd;
+	    }
+
+	    .wrapper {
+	        width: 100px;
+	        height: 200px;
+	        position: absolute;
+	        top: 0;
+	        overflow: hidden;
+	    }
+
+	    .right {
+	        right: 0;
+	    }
+
+	    .left {
+	        left: 0;
+	    }
+
+	    .circleProgress {
+	        width: 160px;
+	        height: 160px;
+	        border: 20px solid rgb(232, 232, 12);
+	        border-radius: 50%;
+	        position: absolute;
+	        top: 0;
+	        -webkit-transform: rotate(45deg);
+	    }
+
+	    .rightcircle {
+	        border-top: 20px solid green;
+	        border-right: 20px solid green;
+	        right: 0;
+	        -webkit-animation: circleProgressLoad_right 5s linear infinite;
+	    }
+
+	    .leftcircle {
+	        border-bottom: 20px solid green;
+	        border-left: 20px solid green;
+	        left: 0;
+	        -webkit-animation: circleProgressLoad_left 5s linear infinite;
+	    }
+
+	    @-webkit-keyframes circleProgressLoad_right {
+	        0% {
+	            border-top: 20px solid #ED1A1A;
+	            border-right: 20px solid #ED1A1A;
+	            -webkit-transform: rotate(45deg);
+	        }
+	        50% {
+	            border-top: 20px solid rgb(232, 232, 12);
+	            border-right: 20px solid rgb(232, 232, 12);
+	            border-left: 20px solid rgb(81, 197, 81);
+	            border-bottom: 20px solid rgb(81, 197, 81);
+	            -webkit-transform: rotate(225deg);
+	        }
+	        100% {
+	            border-left: 20px solid green;
+	            border-bottom: 20px solid green;
+	            -webkit-transform: rotate(225deg);
+	        }
+	    }
+
+	    @-webkit-keyframes circleProgressLoad_left {
+	        0% {
+	            border-bottom: 20px solid #ED1A1A;
+	            border-left: 20px solid #ED1A1A;
+	            -webkit-transform: rotate(45deg);
+	        }
+	        50% {
+	            border-bottom: 20px solid rgb(232, 232, 12);
+	            border-left: 20px solid rgb(232, 232, 12);
+	            border-top: 20px solid rgb(81, 197, 81);
+	            border-right: 20px solid rgb(81, 197, 81);
+	            -webkit-transform: rotate(45deg);
+	        }
+	        100% {
+	            border-top: 20px solid green;
+	            border-right: 20px solid green;
+	            border-bottom: 20px solid green;
+	            border-left: 20px solid green;
+	            -webkit-transform: rotate(225deg);
+	        }
+	    }
+    </style>
+    <script src="./utils"></script>
+</head>
+
+<body>
+    <div class="circleProgress_wrapper">
+        <div class="wrapper right">
+            <div class="circleProgress rightcircle"></div>
+        </div>
+        <div class="wrapper left">
+            <div class="circleProgress leftcircle"></div>
+        </div>
+    </div>
+    <!--<input type="text" smp-model="name" />
+		<p class="test-data" id="tests">{{name}}</p>-->
+    <div id="app">
+        <h1>{{title}}</h1>
+        <input type="text" s-model="val" />
+        <p>{{val}}</p>
+    </div>
+    <div class="testBase" id="testBase">
+    </div>
+</body>
+<script src="./utils.js"></script>
+<script>
+	var utils = new Utils();
+	var _db = utils.dataBase;
+	_db.createDataBase("testBase", "1.0", "数据库描述", 20000);
+	_db.createDatasheet("create table test (id int UNIQUE, mytitle TEXT, timestamp REAL)");
+	_db.operateDatasheet("insert into test (id, mytitle, timestamp) values(?, ?, ?)", [1, "WEB Database", new Date().getTime()], null, null);
+	_db.operateDatasheet("SELECT * FROM test", [],function(tx, result) {
+	        var str = '';
+	        for (var i = 0; i < result.rows.length; i++) {
+	            str += '<b>' + result.rows.item(i)['mytitle'] + '</b><br />'
+	        }
+	        document.getElementById("testBase").innerHTML = str;
+	    },function() {
+	        console.log("error");
+	    }
+    );
+
+var defaultTagRE = /\{\{((?:.|\n)+?)\}\}/g;
+function Test(options) {
+    var data = options.data;
+    var el = options.el;
+    var elArr = Array.prototype.slice.call(el.children, "");
+    var token = [];
+    elArr.forEach(function(item) {
+        var text = item.innerHTML;
+
+        var m = defaultTagRE.exec(text);
+        var k = null;
+        if (m != null) {
+        	console.log(text);
+            for (var i in data) {
+                console.log(m,i);
+                if (m[1] == i) {
+                    k = data[i];
+                    item.innerText = k;
+                }
+            }
+            token.push(text);
+        }
+    })
+    var j = token.join("+");
+    console.log("j="+j)
+}
+
+function def(obj, key, val) {
+    Object.defineProperty(obj, key, {
+        set: function(key, val) {
+
+        },
+        get: function(key) {
+            return;
+        }
+    });
+}
+
+var test = new Test({
+    el: app,
+    data: {
+        title: '标题内容',
+        val: '测试一下'
+    }
+});
+</script>
+<script>
+//实现vuejs中的$watch
+
+var v = new Vue({
+    data: {
+        a: 1,
+        b: 2
+    }
+})
+// v.$watch("a", function() {
+//     console.log("触发$watch");
+// })
+//		v.$watch("a",()=>console.log("触发$watch"));
+
+function Vue(options) {
+    var data = options.data;
+}
+
+function observe(value) {
+    this.vallue = value;
+    this.walk(value);
+
+    this.walk = function(value) {
+        Object.keys(value).forEach(function(key) {
+            return this.convert(key, value[key]);
+        })
+    }
+    this.convert = function(key, val) {
+        defineReactive(this.value, key, val);
+    }
+}
+
+function defineReactive(obj, key, value) {
+    var childOb = observe(value);
+    Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function() {
+            return value;
+        },
+        set: function(newVal) {
+            childOb = observe(newVal) //如果新赋值的值是个复杂类型。再递归它，加上set/get。。
+            return childOb;
+        }
+    })
+}
+
+function observe(value, vm) {
+    if (!value || typeof value !== 'object') {
+        return
+    }
+    return new Observe();
+}
+
+
+function Dep() {
+    this.subs = [];
+}
+Dep.prototype.addSub = function(sub) {
+    this.subs.push(sub);
+}
+Dep.prototype.removeSub = function(sub) {
+    if (this.subs.length > -1) {
+        var i = this.subs.indexOf(sub);
+        if (i > -1) {
+            return this.splice(i, 1);
+        }
+    }
+}
+Dep.prototype.notify = function() {
+    this.subs.forEach(function(sub) {
+        return sub.update();
+    })
+}
+</script>
+
+</html>
