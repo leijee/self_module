@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>cVue</title>
+</head>
+<body>
+	<div id="app">
+		<input type="text" v-model="userName" placeholder="用户名">
+		<p>{{userName}}</p>
+		<button v-click="changeValue">点击触发事件</button>
+		<p>{{newName}}</p>
+	</div>
+
+	<script>
+		function CVue(options){
+			this.defaultTagRE = /\{\{((?:.|\n)+?)\}\}/g;
+			this.init(options);
+
+		}
+
+		CVue.prototype.init = function(options) {
+			this.$el = document.querySelector(options.el);
+			this.$data = options.data;
+			this.$methods = options.methods;
+			this.$cumputed = options.cumputed;
+			this.$watched = options.watched;
+			this.getDom(this.$el,this.$data);
+			this._obverse(this.$data);
+		}
+		CVue.prototype.getDom = function(el,data){
+			var arrEle = Array.prototype.slice.call(el.children,"");
+			var tagRE = this.defaultTagRE;
+			var token = [];
+			arrEle.forEach((item) => {
+				var text = item.innerHTML;
+				var m = tagRE.exec(text);
+		        var k = null;
+		        if (m != null) {
+		            for (var i in data) {
+		                console.log(m,i);
+		                if (m[1] == i) {
+		                    k = data[i];
+		                    item.innerText = k;
+		                }
+		            }
+		            token.push(text);
+		        }
+			})
+		}
+		CVue.prototype._obverse = function(obj) {
+			var value;
+			for(var key in obj){
+				if(obj.hasOwnProperty(key)){
+					value = obj[key];
+
+					if(typeof value === "object"){
+						this._observe(value);
+					}
+					Object.defineProperty(this.$data,key,{
+						enumerable: true,
+				        configurable: true,
+				        get: function () {
+				            return value;
+				        },
+				        set: function (newVal) {
+				            console.log(`更新${newVal}`);
+				            if (value !== newVal) {
+				                value = newVal;
+				                this.watched[key](value);
+				            }
+				        }
+					})
+				}
+			}
+		}
+		CVue.prototype.bindData = function(data){
+			for(var key in data){
+				this[key] = data[key];
+			}
+			this._obverse(this);
+		}
+
+		var cvm = new CVue({
+			el:"#app",
+			data:{
+				userName:'娃哈哈'
+			},
+			methods:{
+				changeValue:function (){
+					this.userName = "哈哈哈哈";
+				}
+			},
+			cumputed:{
+				newName(){
+					return this.userName;
+				}
+			},
+			watched:{
+				userName(value){
+					console.log("值发生了改变"+value);
+				}
+			}
+		})
+
+		cvm.userName = "change me";
+	</script>
+</body>
+</html>
