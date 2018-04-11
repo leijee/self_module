@@ -1,4 +1,5 @@
-#scrollBar(移动端自定义滚动条)
+#scrollBar(自定义滚动条 仅支持移动端)
+#### 演示地址 [https://leijee.github.io/self_module/scrollBar/scrollBar.html](https://leijee.github.io/self_module/scrollBar/scrollBar.html "https://leijee.github.io/self_module/scrollBar/scrollBar.html")
 ### 使用方式
      var bar = new ScrollBar(ele,{ //ele当前滑动元素
 		addBar:'.auto-scroll',//添加滚动条html代码dom节点
@@ -21,6 +22,7 @@
 	scrollTo(x,y) 将当前目标元素滚动到指定的位置，同时xbar或者ybar移动到相应的位置
    	
 #scrollAnimate (PC端鼠标滚动，自动加载动画)
+#### 演示地址 [https://leijee.github.io/self_module/scrollAnimate/index.html](https://leijee.github.io/self_module/scrollAnimate/index.html "https://leijee.github.io/self_module/scrollAnimate/index.html")
 ### 使用方式
 	
 	<!--在head中引入对应动画css文件-->
@@ -52,8 +54,11 @@
 	<script src="./js/scrollAnimate.js"></script>
 	<script>
 		$(function(){
-			var scrolls = new loadScroll(".scroll-animate");//.scroll-animate需要添加动画的dom对应的class
-			scrolls.watch($('.part1-content'),function(){//.part1-content监听添加滚动动画的dom是否进入可视区域
+			var scrolls = new loadScroll({
+				ele:".scroll-animate",//需要判断是否添加动画的dom元素
+				isRepeat:true//页面回滚是否重新执行动画
+			});
+			scrolls.watch($('.part1-content'),function(){
 				console.log('在可视区域内');
 			},function(){
 				console.log('在可视区域外');
